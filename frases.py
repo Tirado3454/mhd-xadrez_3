@@ -2,47 +2,55 @@ import streamlit as st
 import pandas as pd
 from fpdf import FPDF
 
-# Banco de frases organizado por categorias
-frases = {
-    "Método Científico": [
+# Banco de frases organizado por categorias (baseado no documento fornecido)
+frases_por_titulo = {
+    "Método Científico e a Evolução da Ciência": [
+        "O método científico é uma abordagem sistemática para entender o mundo natural.",
+        "A ciência evolui com base em observações, hipóteses, experimentos e análises.",
+        "Cada descoberta científica é construída sobre os ombros de conhecimentos prévios.",
+        "O método científico promove a busca pela verdade com base em evidências.",
+    ],
+    "Sem Método Científico e Fatores Insólitos": [
+        "Sem o método científico, nossas explicações para fenômenos naturais seriam baseadas em mitos e superstições.",
+        "A humanidade viveria à mercê de crenças infundadas e dogmas inquestionáveis.",
+        "A saúde estaria limitada a práticas mágicas e remédios sem eficácia comprovada.",
+        "Doenças seriam vistas como maldições ou punições divinas, e não como processos biológicos tratáveis.",
+    ],
+    "Como Proceder na Ciência": [
+        "O cientista deve buscar a verdade com base em evidências, e não em preferências pessoais.",
+        "É fundamental manter a mente aberta, mas sempre exigindo provas antes de aceitar novas ideias.",
+        "O método científico é a bússola que guia o cientista no caminho da racionalidade.",
+        "O cientista deve estar disposto a mudar de opinião diante de novos dados confiáveis.",
+    ],
+    "Pensadores e Transformações nos Métodos Científicos": [
         "O conhecimento é poder. (Francis Bacon)",
         "A dúvida é o princípio da sabedoria. (Aristóteles)",
-        "A ciência nada mais é do que o refinamento do pensamento cotidiano. (Albert Einstein)",
-    ],
-    "História da Ciência": [
         "A matemática é a linguagem na qual Deus escreveu o universo. (Galileu Galilei)",
-        "A experiência nunca erra; apenas nossos julgamentos falham ao esperar que ela produza resultados fora do possível. (Leonardo da Vinci)",
-    ],
-    "Pensadores": [
-        "Se vi mais longe, foi porque me apoiei nos ombros de gigantes. (Isaac Newton)",
-        "A imaginação é mais importante que o conhecimento. (Albert Einstein)",
-        "Não é a mais forte das espécies que sobrevive, mas a que melhor se adapta às mudanças. (Charles Darwin)",
+        "A simplicidade é a sofisticação máxima. (Leonardo da Vinci)",
     ],
 }
 
-# Título da aplicação
-st.title("Banco de Frases para Planos de Aula")
-st.markdown("### Escolha as frases que deseja incluir em sua aula:")
+# Título do programa
+st.title("Banco de Frases para Aulas")
+st.markdown("### Selecione frases organizadas por categorias para sua aula.")
 
 # Armazenar seleções
 selecoes = {}
 
-# Interface para seleção de frases
-for categoria, lista_frases in frases.items():
-    st.markdown(f"#### {categoria}")
-    selecoes[categoria] = []
-    for frase in lista_frases:
-        if st.checkbox(frase, key=f"{categoria}_{frase}"):
-            selecoes[categoria].append(frase)
+# Exibir categorias e frases
+for titulo, frases in frases_por_titulo.items():
+    with st.expander(f"Categoria: {titulo}"):
+        selecoes[titulo] = []
+        for frase in frases:
+            if st.checkbox(frase, key=f"{titulo}_{frase}"):
+                selecoes[titulo].append(frase)
 
 # Botão para organizar e exportar frases
-st.markdown("### Exportar Frases Selecionadas")
-
+st.markdown("### Revisar e Exportar Frases Selecionadas")
 if st.button("Organizar e Exportar"):
-    # Criar DataFrame para frases selecionadas
     frases_selecionadas = [
-        {"Categoria": categoria, "Frase": frase}
-        for categoria, frases_categoria in selecoes.items()
+        {"Categoria": titulo, "Frase": frase}
+        for titulo, frases_categoria in selecoes.items()
         for frase in frases_categoria
     ]
     if frases_selecionadas:
